@@ -186,7 +186,7 @@ class _NewsPageState extends State<NewsPage> {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0, left: 8),
       child: Container(
-        decoration: BoxDecoration(color: Colors.grey),
+        decoration: BoxDecoration(color: Colors.black.withOpacity(.5)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
