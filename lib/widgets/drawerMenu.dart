@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:news/pages/categoryNews.dart';
 
@@ -14,8 +15,7 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
 
  Drawer _newsCategory(){
-    if(widget.rssUrl.contains("t24")){
-      return Drawer(
+    return Drawer(
       child: Container(
 
         child: ListView(
@@ -37,166 +37,45 @@ class _MyDrawerState extends State<MyDrawer> {
                       color: Colors.white),
                 ))),
             newsCategory(
-                icon: Icons.home_filled,
-                text: "Genel",
-                rssUrl: "https://t24.com.tr/rss"),
-            newsCategory(
-                icon: Icons.public,
-                text: "Dünya",
-                rssUrl: "https://t24.com.tr/rss/haber/dunya"),
-            newsCategory(
-                icon: Icons.coronavirus,
-                text: "Koronavirüs",
-                rssUrl: "https://t24.com.tr/rss/haber/koronavirus"),
-            newsCategory(
-                icon: Icons.account_balance,
-                text: "Siyaset",
-                rssUrl: "https://t24.com.tr/rss/haber/politika"),
-            newsCategory(
-                icon: Icons.money,
-                text: "Ekonomi",
-                rssUrl: "https://t24.com.tr/rss/haber/ekonomi"),
-            newsCategory(
-                icon: Icons.sports_basketball,
-                text: "Spor",
-                rssUrl: "https://t24.com.tr/rss/haber/spor"),
-            newsCategory(
-                icon: Icons.people_alt,
-                text: "Magazin",
-                rssUrl: "https://t24.com.tr/rss/haber/magazin"),
-            newsCategory(
-                icon: Icons.science,
-                text: "Bilim/Teknoloji",
-                rssUrl: "https://t24.com.tr/rss/haber/bilim-teknoloji"),
-            newsCategory(
-                icon: Icons.local_hospital,
-                text: "Sağlık",
-                rssUrl: "https://t24.com.tr/rss/haber/saglik"),
-            newsCategory(
-                icon: Icons.school,
-                text: "Eğitim",
-                rssUrl: "https://t24.com.tr/rss/haber/egitim"),
-          ],
-        ),
-      ),
-    );
-    }else if(widget.rssUrl.contains("haberturk")){
-      return Drawer(
-      child: Container(
-
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-               
-                    image: DecorationImage(
-                        colorFilter:
-                            ColorFilter.mode(Colors.black38, BlendMode.multiply),
-                        image: AssetImage("assets/images/news1.jpg"),
-                        fit: BoxFit.cover)),
-                child: Align(
-                    child: Text(
-                  "Haber Çeşitleri",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20,
-                      color: Colors.white),
-                ))),
-            newsCategory(
-                icon: Icons.home_filled,
-                text: "Genel",
+                icon: "assets/images/sabah.svg",
+                text: "Sabah",
+                rssUrl: "https://www.sabah.com.tr/rss/anasayfa.xml"),
+             newsCategory(
+                icon: "assets/images/haberTurk.svg",
+                text: "Haber Türk",
                 rssUrl: "https://www.haberturk.com/rss"),
-            newsCategory(
-                icon: Icons.public,
-                text: "Dünya",
-                rssUrl: "https://www.haberturk.com/rss/kategori/dunya.xml"),
-            newsCategory(
-                icon: Icons.money,
-                text: "Ekonomi",
-                rssUrl: "https://www.haberturk.com/rss/ekonomi.xml"),
-            newsCategory(
-                icon: Icons.sports_basketball,
-                text: "Spor",
-                rssUrl: "https://www.haberturk.com/rss/spor.xml"),
-            newsCategory(
-                icon: Icons.people_alt,
-                text: "Magazin",
-                rssUrl: "https://www.haberturk.com/rss/magazin.xml"),
-            newsCategory(
-                icon: Icons.local_hospital,
-                text: "Sağlık",
-                rssUrl: "https://www.haberturk.com/rss/kategori/saglik.xml"),
-          ],
-        ),
-      ),
-    );
-    }else{  
-      return Drawer(
-      child: Container(
-
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-               
-                    image: DecorationImage(
-                        colorFilter:
-                            ColorFilter.mode(Colors.black38, BlendMode.multiply),
-                        image: AssetImage("assets/images/news1.jpg"),
-                        fit: BoxFit.cover)),
-                child: Align(
-                    child: Text(
-                  "Haber Çeşitleri",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20,
-                      color: Colors.white),
-                ))),
-            newsCategory(
-                icon: Icons.home_filled,
-                text: "Genel",
-                rssUrl: "https://www.sabah.com.tr/rss/gundem.xml",
-                ),
-            
-            newsCategory(
-                icon: Icons.public,
-                text: "Dünya",
-                rssUrl: "https://www.sabah.com.tr/rss/dunya.xml"),
-            newsCategory(
-                icon: Icons.money,
-                text: "Ekonomi",
-                rssUrl: "https://www.sabah.com.tr/rss/ekonomi.xml"),
-            newsCategory(
-                icon: Icons.sports_basketball,
-                text: "Spor",
-                rssUrl: "https://www.sabah.com.tr/rss/spor.xml"),
-            newsCategory(
-                icon: Icons.local_hospital,
-                text: "Sağlık",
-                rssUrl: "https://www.sabah.com.tr/rss/saglik.xml"),
+              newsCategory(
+                icon: "assets/images/t24.svg",
+                text: "T24",
+                rssUrl: "https://t24.com.tr/rss"),
+  
           ],
         ),
       ),
     );
     }
 
-  }
+  
   @override
   Widget build(BuildContext context) {
     return _newsCategory();
   }
 
-  ListTile newsCategory({icon, text,String rssUrl}) {
+  ListTile newsCategory({String icon, text,String rssUrl}) {
     String newsSite;
+    var leading;
     if(rssUrl.contains("t24")){
       newsSite = "T24";
+      leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 33, width: 33,);
     }else if(rssUrl.contains("sabah")){
       newsSite = "Sabah";
+      leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 60, width: 60,);
     }else{
       newsSite = "Haber Türk";
+      leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 27, width: 27,);
     }
     return ListTile(
-        leading:  Icon(icon,),
+        leading: leading,
         title: Text(text),
         
         onTap: () => Navigator.pushAndRemoveUntil(
@@ -205,7 +84,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   builder: (context) => NewsPage(
                     newsSite: newsSite,
                         rssUrl: rssUrl,
-                        newsType: text,
+                        newsType: "Genel",
+                        isListTile: true,
                       )),
               ModalRoute.withName('/'),
             ));
