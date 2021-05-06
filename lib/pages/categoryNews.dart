@@ -9,6 +9,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' show utf8;
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../models/category_card_model.dart';
+import '../widgets/category_card.dart';
+
 class NewsPage extends StatefulWidget {
   final bool isListTile;
   final String rssUrl;
@@ -33,6 +36,7 @@ class _NewsPageState extends State<NewsPage> {
   String _newsType;
   String _newsSite;
   bool _istListTile;
+  List<CategoryCardModel> categories = [];
 
   AdvertService advertService = AdvertService();
 
@@ -71,6 +75,8 @@ class _NewsPageState extends State<NewsPage> {
     _newsSite = widget.newsSite;
     _refreshKey = GlobalKey<RefreshIndicatorState>();
     load();
+    categories = CategoryCardModel.getCategories();
+
     print(rssurl);
   }
 
@@ -80,81 +86,20 @@ class _NewsPageState extends State<NewsPage> {
       primary: true,
       children: <Widget>[
         Container(
-          height: 100,
+          height: 80,
           width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NewsPage(
-                                  rssUrl:
-                                      "https://www.sabah.com.tr/rss/anasayfa.xml",
-                                  newsType: "Haberler",
-                                  newsSite: "Sabah",
-                                )),
-                        ModalRoute.withName('/'),
-                      );
-                    },
-                    child: SvgPicture.asset(
-                      "assets/images/sabah.svg",
-                      color: Colors.red[800],
-                      width: 100,
-                      height: 100,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NewsPage(
-                                  rssUrl: "https://www.haberturk.com/rss",
-                                  newsType: "Haberler",
-                                  newsSite: "Haber Türk",
-                                )),
-                        ModalRoute.withName('/'),
-                      );
-                    },
-                    child: SvgPicture.asset(
-                      "assets/images/haberTurk.svg",
-                      width: 90,
-                      height: 45,
-                    )),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Container(
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NewsPage(
-                                    rssUrl: "https://t24.com.tr/rss",
-                                    newsType: "Haberler",
-                                    newsSite: "T24",
-                                  )),
-                          ModalRoute.withName('/'),
-                        );
-                      },
-                      child: SvgPicture.asset(
-                        "assets/images/t24.svg",
-                        width: 94,
-                        height: 48,
-                        color: Colors.blue[800],
-                      )),
-                ),
-              ),
-            ],
-          ),
+          padding: EdgeInsets.only(left: 5),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                return Center(
+                    child: CategoryCard(
+                  imageAssetUrl: categories[index].categoryImage,
+                  categoryName: categories[index].categoryName,
+                  rssUrl: categories[index].rssUrl,
+                ));
+              }),
         ),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -166,9 +111,9 @@ class _NewsPageState extends State<NewsPage> {
             itemBuilder: (BuildContext context, int index) {
               final item = _feed.items[index];
               return Container(
-
-                child: _istListTile == true ?  listCardPage(item) : newsCardPage(item),
-                
+                child: _istListTile == true
+                    ? listCardPage(item)
+                    : newsCardPage(item),
               );
             },
           ),
@@ -179,25 +124,24 @@ class _NewsPageState extends State<NewsPage> {
 
   listCardPage(RssItem item) {
     return Padding(
-      padding:const EdgeInsets.only(bottom: 8, left: 4, right: 4),
+      padding: const EdgeInsets.only(bottom: 8, left: 4, right: 4),
       child: Material(
         child: Card(
-          
           margin: EdgeInsets.only(left: 4, right: 4, bottom: 4),
           shadowColor: Colors.black,
           elevation: 3,
-                  child: Container(
-           
+          child: Container(
             child: Padding(
-              padding: const EdgeInsets.only( top: 4, bottom: 4),
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: ListTile(
-                subtitle: Text(
-            item.pubDate.toString().substring(0, 16) ??
-                "Tarih", // haber ilk girildiğinde Tarih bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-               color:Colors.grey,),
-          ),
+                  subtitle: Text(
+                    item.pubDate.toString().substring(0, 16) ??
+                        "Tarih", // haber ilk girildiğinde Tarih bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                   title: Text(
                     item.title ??
                         "Başlık", // haber ilk girildiğinde title bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
@@ -252,7 +196,9 @@ class _NewsPageState extends State<NewsPage> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2),
             Text(
@@ -260,7 +206,9 @@ class _NewsPageState extends State<NewsPage> {
                   "Tarih", // haber ilk girildiğinde Tarih bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                  fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -325,18 +273,22 @@ class _NewsPageState extends State<NewsPage> {
         rssUrl: rssurl,
       ),
       appBar: AppBar(
- 
         actions: [
-
-        _istListTile == false ?  IconButton(icon: Icon(Icons.list_alt_sharp), onPressed: (){
-            setState(() {
-              _istListTile = true;
-            });
-          }): IconButton(icon: Icon(Icons.grid_view), onPressed: (){
-            setState(() {
-              _istListTile = false;
-            });
-          }),
+          _istListTile == false
+              ? IconButton(
+                  icon: Icon(Icons.list_alt_sharp),
+                  onPressed: () {
+                    setState(() {
+                      _istListTile = true;
+                    });
+                  })
+              : IconButton(
+                  icon: Icon(Icons.grid_view),
+                  onPressed: () {
+                    setState(() {
+                      _istListTile = false;
+                    });
+                  }),
 
           // Padding(
           //   padding: const EdgeInsets.only(right: 4.0),
