@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news/AdmobService.dart';
 import 'package:news/widgets/ShowNews.dart';
 import 'package:news/widgets/drawerMenu.dart';
+import 'package:theme_provider/theme_provider.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show utf8;
