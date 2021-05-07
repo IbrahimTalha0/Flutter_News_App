@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:news/AdmobService.dart';
+
 import 'package:news/widgets/ShowNews.dart';
 import 'package:news/widgets/drawerMenu.dart';
 import 'package:webfeed/webfeed.dart';
@@ -36,8 +36,6 @@ class _NewsPageState extends State<NewsPage> {
   String _newsSite;
   bool _istListTile;
   List<CategoryCardModel> categories = [];
-
-  AdvertService advertService = AdvertService();
 
   GlobalKey<RefreshIndicatorState>
       _refreshKey; // yukarıdan çektiğimiz sayfanın yenilenmesi için kullanacağımız key
@@ -172,7 +170,6 @@ class _NewsPageState extends State<NewsPage> {
         child: GestureDetector(
             //haberin üzerine tıklayınca haber ayrıntılarına gitmek için kullanıyoruz.
             onTap: () {
-              advertService.showInsterstitialAd();
               Navigator.push(context,
                   MaterialPageRoute(builder: (contex) => ShowNews(item: item)));
             },
@@ -288,7 +285,6 @@ class _NewsPageState extends State<NewsPage> {
                       _istListTile = false;
                     });
                   }),
-
         ],
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
