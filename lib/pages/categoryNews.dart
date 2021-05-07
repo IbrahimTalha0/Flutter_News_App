@@ -67,7 +67,7 @@ class _NewsPageState extends State<NewsPage> {
   void initState() {
     super.initState();
     rssurl = widget.rssUrl;
-    _istListTile = widget.isListTile;
+    widget.isListTile == null ? _istListTile = false : _istListTile = widget.isListTile;
     _newsType = widget.newsType;
     _newsSite = widget.newsSite;
     _refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -123,37 +123,43 @@ class _NewsPageState extends State<NewsPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, left: 4, right: 4),
       child: Material(
-        child: Card(
-          margin: EdgeInsets.only(left: 4, right: 4, bottom: 4),
-          shadowColor: Colors.black,
-          elevation: 3,
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
-              child: ListTile(
-                  subtitle: Text(
-                    item.pubDate.toString().substring(0, 16) ??
-                        "Tarih", // haber ilk girildiğinde Tarih bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.grey,
+        child: GestureDetector(
+          onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (contex) => ShowNews(item: item)));
+          },
+                  child: Card(
+            margin: EdgeInsets.only(left: 4, right: 4, bottom: 4),
+            shadowColor: Colors.black,
+            elevation: 3,
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: ListTile(
+                    subtitle: Text(
+                      item.pubDate.toString().substring(0, 16) ??
+                          "Tarih", // haber ilk girildiğinde Tarih bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    item.title ??
-                        "Başlık", // haber ilk girildiğinde title bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: CachedNetworkImage(
-                    placeholder: (context, url) => Image.asset(
-                      placeholderImg,
+                    title: Text(
+                      item.title ??
+                          "Başlık", // haber ilk girildiğinde title bazen boş olabiliyor, hata almamak için bu şeklide bir kullanım tercih ettim
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: CachedNetworkImage(
+                      placeholder: (context, url) => Image.asset(
+                        placeholderImg,
+                        fit: BoxFit.fill,
+                      ),
+                      imageUrl: item.enclosure.url,
+                      alignment: Alignment.center,
                       fit: BoxFit.fill,
-                    ),
-                    imageUrl: item.enclosure.url,
-                    alignment: Alignment.center,
-                    fit: BoxFit.fill,
-                  )),
+                    )),
+              ),
             ),
           ),
         ),
