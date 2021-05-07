@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news/AdmobService.dart';
 import 'package:news/widgets/ShowNews.dart';
 import 'package:news/widgets/drawerMenu.dart';
-import 'package:theme_provider/theme_provider.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show utf8;
@@ -290,14 +289,6 @@ class _NewsPageState extends State<NewsPage> {
                     });
                   }),
 
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 4.0),
-          //   child: InkWell(
-          //       onTap: () {
-          //         showDialog(context: context, builder: (_) => ThemeDialog());
-          //       },
-          //       child: Container(width: 20, height: 20, child: svgTheme)),
-          // )
         ],
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),

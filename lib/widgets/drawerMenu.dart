@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:news/pages/categoryNews.dart';
+import 'package:theme_provider/theme_provider.dart';
 
 
 class MyDrawer extends StatefulWidget {
@@ -13,6 +14,11 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+    final Widget svgTheme = SvgPicture.asset(
+    "assets/images/theme.svg",
+
+    fit: BoxFit.cover, height: 32, width: 32,
+  );
 
  Drawer _newsCategory(){
     return Drawer(
@@ -48,6 +54,13 @@ class _MyDrawerState extends State<MyDrawer> {
                 icon: "assets/images/t24.svg",
                 text: "T24",
                 rssUrl: "https://t24.com.tr/rss"),
+               ListTile(
+        leading: svgTheme,
+        title: Text("Tema Değiştir"),
+        
+        onTap: () {
+          showDialog(context: context, builder: (_) => ThemeDialog(title: Text("Tema Seç"),));
+        })
   
           ],
         ),
@@ -69,7 +82,7 @@ class _MyDrawerState extends State<MyDrawer> {
       leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 33, width: 33,);
     }else if(rssUrl.contains("sabah")){
       newsSite = "Sabah";
-      leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 60, width: 60,);
+      leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 60, width: 60,color: Colors.red,);
     }else{
       newsSite = "Haber Türk";
       leading = SvgPicture.asset(icon, fit: BoxFit.cover, height: 27, width: 27,);
